@@ -12,18 +12,19 @@ import java.sql.Statement;
 
 public class Sign_Up extends JFrame implements ActionListener{
 	
-	private Connection conn = null;
-	private Statement stmt = null;
-	private ResultSet result = null;
 	private JButton btnSignUp;
 	private JTextField textFieldId, textFieldPw, textFieldPwCheck, textFieldName;
 	private JLabel labelQLogin;
 	private JButton btnByLogin;
 	private JPanel panelInputSignUp, panelByLogin;
+	
+	private Connection conn = null;
+	private Statement stmt = null;
+	private ResultSet result = null;
 
 	public Sign_Up() {
 		setTitle("회원가입");
-		setSize(400, 500);
+		setSize(400, 420);
 		setResizable(false);
 		
 		setLayout(new FlowLayout());

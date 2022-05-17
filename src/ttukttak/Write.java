@@ -12,6 +12,7 @@ import java.sql.Statement;
 
 public class Write extends JFrame implements ActionListener{
 	
+	private JButton btnPrevious;
 	private JPanel panelWrite;
 	private JTextField textFieldFoodName, textFieldIngredient;
 	private JScrollPane scrollPane;
@@ -35,16 +36,29 @@ public class Write extends JFrame implements ActionListener{
 		
 		JLabel labelLogo = new JLabel(new ImageIcon("images/logo_b.jpg"));
 		
+		
+		//
+		makeBtnPrevious();
+		
 		//
 		makeWrite();
 		
-		//add(labelLogo, BorderLayout.NORTH);
+		add(btnPrevious, BorderLayout.NORTH);
 		add(panelWrite, BorderLayout.CENTER);
-		add(btnWrite, BorderLayout.SOUTH);
+		add(btnCancel, BorderLayout.SOUTH);
 		
 		setVisible(true);
 	}
 	
+	private void makeBtnPrevious() {
+		btnPrevious = new JButton(new ImageIcon("images/previous.png"));
+		btnPrevious.setBackground(new Color(0xF4F3EF));
+		btnPrevious.setBorderPainted(false);
+		btnPrevious.setContentAreaFilled(false);
+		btnPrevious.addActionListener(this);
+		
+	}
+
 	private void makeWrite() {
 		panelWrite = new JPanel();
 		
@@ -55,12 +69,11 @@ public class Write extends JFrame implements ActionListener{
 		textFieldIngredient = new JTextField(30);
 		
 		JLabel labelRecipe = new JLabel("레시피 : ");
-		textAreaRecipe = new JTextArea();
+		textAreaRecipe = new JTextArea(7, 20);
 		scrollPane = new JScrollPane(textAreaRecipe);
-		scrollPane.add(textAreaRecipe);
 		
 		
-		btnCancel = new JButton("");
+		btnCancel = new JButton("취소");
 		btnCancel.setBorderPainted(false);
 		btnCancel.setContentAreaFilled(false);
 		btnCancel.addActionListener(this);
@@ -88,9 +101,12 @@ public class Write extends JFrame implements ActionListener{
 		
 		if(obj == btnWrite) {
 			String foodName = textFieldFoodName.getText();
+			String ingredient = textFieldIngredient.getText();
+			String recipe = textAreaRecipe.getText();
 
 			
-			String sql = "insert into ";
+			String sql = "insert into bban.write(foodname, ingredient, recipe) "
+					+ "values('" + foodName + "', '" + ingredient + "', '" + recipe + "')";
 			System.out.println(sql);
 			
 			try {
@@ -112,6 +128,15 @@ public class Write extends JFrame implements ActionListener{
 				System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
 				e1.printStackTrace();
 			}
+		} else if(obj == btnCancel) {
+			JOptionPane.showConfirmDialog(null, "작성을 그만하겠습니까?", "", JOptionPane.OK_CANCEL_OPTION);
+			
+			
+		} else if(obj == btnPrevious) {
+			
+			JOptionPane.showMessageDialog(null, "로그인 성공", "", JOptionPane.PLAIN_MESSAGE);
+			this.setVisible(false);
+			new Menu();
 		}
 	}
 

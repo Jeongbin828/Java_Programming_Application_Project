@@ -12,24 +12,22 @@ import java.sql.Statement;
 
 public class Login extends JFrame implements ActionListener{
 	
-	private Connection conn = null;
-	private Statement stmt = null;
-	private ResultSet result = null;
 	
 	private JTextField textFieldId;
 	private JTextField textFieldPw;
 	
-	private JButton btnLogin;
-	private JButton signUpBtn;
+	private JButton btnLogin, btnBySignUp;
 	private JLabel labelQSignUp;
-	private JButton btnSignUp;
 	private JPanel panelInputLogin, panelBySignUp;
-	private String id;
-	private String pw;
+	private String id, pw;
+	
+	private Connection conn = null;
+	private Statement stmt = null;
+	private ResultSet result = null;
 
 	public Login(){
 		setTitle("로그인");
-		setSize(400, 400);
+		setSize(400, 380);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
@@ -60,13 +58,13 @@ public class Login extends JFrame implements ActionListener{
 		labelQSignUp = new JLabel("아직 회원이 아니신가요?");
 		labelQSignUp.setForeground(Color.GRAY);
 		
-		btnSignUp = new JButton("회원 가입하기");
-		btnSignUp.setBorderPainted(false);
-		btnSignUp.setContentAreaFilled(false);
-		btnSignUp.addActionListener(this);
+		btnBySignUp = new JButton("회원 가입하기");
+		btnBySignUp.setBorderPainted(false);
+		btnBySignUp.setContentAreaFilled(false);
+		btnBySignUp.addActionListener(this);
 		
 		panelBySignUp.add(labelQSignUp);
-		panelBySignUp.add(btnSignUp);
+		panelBySignUp.add(btnBySignUp);
 	}
 
 	private void makeInputLogin() {
@@ -126,8 +124,11 @@ public class Login extends JFrame implements ActionListener{
 				
 				if(result.next()) {
 					JOptionPane.showMessageDialog(null, "로그인 성공", "", JOptionPane.PLAIN_MESSAGE);
+					this.setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(null, "로그인 실패", "", JOptionPane.ERROR_MESSAGE);
+					textFieldId.setText("");
+					textFieldPw.setText("");
 				}
 				
 			} catch (SQLException e1) {
@@ -137,7 +138,7 @@ public class Login extends JFrame implements ActionListener{
 				System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
 				e1.printStackTrace();
 			}
-		} else if(obj == btnSignUp) {
+		} else if(obj == btnBySignUp) {
 			this.setVisible(false);
 			new Sign_Up();
 		}

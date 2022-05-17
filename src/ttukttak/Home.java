@@ -16,31 +16,30 @@ public class Home extends JFrame implements ActionListener{
 		setSize(1024, 682);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container contentPane = getContentPane();
 		contentPane.setBackground(new Color(0xBD864F));
-		//setLayout(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//
-		makeToolBar();
+//		makeToolBar();
 		
 		setVisible(true);
 	}
 
-	private void makeToolBar() {
-		toolBar = new JToolBar();
-		toolBar.setBackground(null);
-		toolBar.setFloatable(false);
-		
-		btnSignIn = new JButton(new ImageIcon("images/user_fill.png"));
-		btnSignIn.setBorderPainted(false);
-		btnSignIn.setContentAreaFilled(false);
-		btnSignIn.addActionListener(this);
-		
-		toolBar.add(new JButton(new ImageIcon("images/logo_basic.jpg")));
-	}
-	
+//	private void makeToolBar() {
+//		toolBar = new JToolBar();
+//		toolBar.setBackground(null);
+//		toolBar.setFloatable(false);
+//		
+//		btnSignIn = new JButton(new ImageIcon("images/user_fill.png"));
+//		btnSignIn.setBorderPainted(false);
+//		btnSignIn.setContentAreaFilled(false);
+//		btnSignIn.addActionListener(this);
+//		
+//		toolBar.add(new JButton(new ImageIcon("images/logo_basic.jpg")));
+//	}
+//	
 	public void paint(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 	}
@@ -53,9 +52,9 @@ public class Home extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		
-		if(obj == btnSignIn) {
-			new Login();
-		}
+//		if(obj == btnSignIn) {
+//			new Login();
+//		}
 	}
 
 }

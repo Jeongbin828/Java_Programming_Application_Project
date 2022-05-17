@@ -11,6 +11,10 @@ import java.awt.event.MouseListener;
 
 public class Menu extends JFrame implements ActionListener, MouseListener{
 	
+	private JPanel panelHeader;
+	private JToolBar toolBar;
+	private JLabel labelShowName;
+	private JButton btnUser, btnSave;
 	private JTabbedPane tabbedPane;
 	private JPanel panelAll, panelKorean, panelJapanese, panelWestern, panelEtc;
 
@@ -22,20 +26,52 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		
 		Container contentPane = getContentPane();
 		contentPane.setBackground(new Color(0xF4F3EF));
-
-		ImageIcon logo = new ImageIcon("images/logo_b.jpg");
-		JLabel label = new JLabel(logo);
+		
+		//
+		makeHeader();
 		
 		//
 		makeBtnMenu();
 		
 		
-		add(label, BorderLayout.NORTH);
+		add(panelHeader, BorderLayout.NORTH);
 		add(tabbedPane, BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
 	
+	private void makeHeader() {
+		panelHeader = new JPanel();
+		panelHeader.setBackground(new Color(0xF4F3EF));
+		panelHeader.setLayout(new BorderLayout());
+		
+		ImageIcon logo = new ImageIcon("images/logo_basic.jpg");
+		JLabel label = new JLabel(logo);
+		
+		toolBar = new JToolBar();
+		toolBar.setBackground(new Color(0xF4F3EF));
+		toolBar.setBorderPainted(false);
+		
+//		labelShowName = new JLabel("");
+		
+		
+		btnSave = new JButton(new ImageIcon("images/save_fill.png"));
+		btnSave.setBackground(new Color(0xF4F3EF));
+		btnSave.setBorderPainted(false);
+		btnSave.addActionListener(this);
+		
+		btnUser = new JButton(new ImageIcon("images/user_fill.png"));
+		btnUser.setBackground(new Color(0xF4F3EF));
+		btnUser.setBorderPainted(false);
+		btnUser.addActionListener(this);
+		
+		toolBar.add(btnSave);
+		toolBar.add(btnUser);
+		
+		panelHeader.add(label, BorderLayout.CENTER);
+		panelHeader.add(toolBar, BorderLayout.EAST);
+	}
+
 	private void makeBtnMenu() {
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setBackground(new Color(0xF4F3EF));
@@ -74,7 +110,14 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-	
+		
+		if(obj == btnSave) {
+			this.setVisible(false);
+			new Save();
+		} else if(obj == btnUser) {
+			this.setVisible(false);
+			new User();
+		}
 	}
 
 	@Override
