@@ -4,46 +4,102 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class Menu extends JFrame{
+public class Menu extends JFrame implements ActionListener, MouseListener{
+	
+	private JTabbedPane tabbedPane;
+	private JPanel panelAll, panelKorean, panelJapanese, panelWestern, panelEtc;
+
 	public Menu() {
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setSize(1024, 682);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		setLayout(new BorderLayout());
 		
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout());
-		JMenuBar menuBar = new JMenuBar();
+		Container contentPane = getContentPane();
+		contentPane.setBackground(new Color(0xF4F3EF));
+
+		ImageIcon logo = new ImageIcon("images/logo_b.jpg");
+		JLabel label = new JLabel(logo);
 		
-		Font font = new Font("맑은 고딕", Font.BOLD, 30);
+		//
+		makeBtnMenu();
 		
-		JMenu menu1 = new JMenu("한식");
-		menu1.setFont(font);
-		JMenu menu2 = new JMenu("일식");
-		menu2.setFont(font);
-		JMenu menu3 = new JMenu("양식");
-		menu3.setFont(font);
-		JMenu menu4 = new JMenu("중식");
-		menu4.setFont(font);
-		JMenu menu5 = new JMenu("아시안");
-		menu5.setFont(font);
-		JMenu save = new JMenu("찜하기");
-		save.setFont(font);
 		
-		menuBar.add(menu1);
-		menuBar.add(menu2);
-		menuBar.add(menu3);
-		menuBar.add(menu4);
-		menuBar.add(menu5);
-		menuBar.add(save);
-		panel.add(menuBar, BorderLayout.CENTER);
-		add(panel);
-		
+		add(label, BorderLayout.NORTH);
+		add(tabbedPane, BorderLayout.CENTER);
 		
 		setVisible(true);
+	}
+	
+	private void makeBtnMenu() {
+		tabbedPane = new JTabbedPane();
+		tabbedPane.setBackground(new Color(0xF4F3EF));
+		tabbedPane.setFont(new Font("", Font.BOLD, 15));
+		tabbedPane.addMouseListener(this);
+		
+		panelAll = new JPanel();
+		panelAll.setBackground(new Color(0xF4F3EF));
+		tabbedPane.addTab("전체", new ImageIcon(""), panelAll);
+		
+		panelKorean = new JPanel();
+		panelKorean.setBackground(new Color(0xF4F3EF));
+		tabbedPane.addTab("한식", new ImageIcon(), panelKorean);
+		
+		panelJapanese = new JPanel();
+		panelJapanese.setBackground(new Color(0xF4F3EF));
+		tabbedPane.addTab("일식", new ImageIcon(""), panelJapanese);
+		
+		panelWestern = new JPanel();
+		panelWestern.setBackground(new Color(0xF4F3EF));
+		tabbedPane.addTab("양식", new ImageIcon("images/western.png"), panelWestern);
+		
+		panelEtc = new JPanel();
+		panelEtc.setBackground(new Color(0xF4F3EF));
+		tabbedPane.addTab("기타", new ImageIcon(""), panelEtc);
+		
+//		tabbedPane.setVerticalTextPosition(JB.BOTTOM);
+//		btnWestern.setHorizontalTextPosition(JButton.CENTER);
+		
 	}
 
 	public static void main(String[] args) {
 		new Menu();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+	
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		Object obj = e.getSource();
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		
 	}
 
 }

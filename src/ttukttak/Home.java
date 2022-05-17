@@ -7,39 +7,42 @@ import java.awt.event.ActionListener;
 
 public class Home extends JFrame implements ActionListener{
 	
+	private Image background = new ImageIcon("images/background.jpg").getImage();
 	private JToolBar toolBar;
 	private JButton btnSignIn;
 
 	public Home(){
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("ถาตü");
+		setSize(1024, 682);
+		setLocationRelativeTo(null);
+		setResizable(false);
 		
 		Container contentPane = getContentPane();
-		contentPane.setLayout(new GridLayout(2, 1));
-		contentPane.setBackground(new Color(0xF4F3EF));
-		
-		ImageIcon logo = new ImageIcon("images/logo_basic.jpg");
-		JLabel label = new JLabel(logo);
+		contentPane.setBackground(new Color(0xBD864F));
+		//setLayout(null);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//
 		makeToolBar();
-		
-		add(label);
-		add(toolBar);
 		
 		setVisible(true);
 	}
 
 	private void makeToolBar() {
 		toolBar = new JToolBar();
-		toolBar.setBackground(new Color(0xF4F3EF));
+		toolBar.setBackground(null);
 		toolBar.setFloatable(false);
 		
 		btnSignIn = new JButton(new ImageIcon("images/user_fill.png"));
 		btnSignIn.setBorderPainted(false);
+		btnSignIn.setContentAreaFilled(false);
 		btnSignIn.addActionListener(this);
 		
-		toolBar.add(btnSignIn);
+		toolBar.add(new JButton(new ImageIcon("images/logo_basic.jpg")));
+	}
+	
+	public void paint(Graphics g) {
+		g.drawImage(background, 0, 0, null);
 	}
 
 	public static void main(String[] args) {

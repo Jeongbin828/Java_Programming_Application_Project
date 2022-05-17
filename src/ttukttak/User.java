@@ -3,18 +3,19 @@ package ttukttak;
 import javax.swing.*;
 import java.awt.*;
 
-public class Save extends JFrame{
+public class User extends JFrame{
 	
-	public Save() {
-		setSize(1024, 682);
+	public User() {
+		setSize(1024, 628);
 		setLocationRelativeTo(null);
 		setResizable(false);
+		
 		
 		setVisible(true);
 	}
 
 	public static void main(String[] args) {
-
+		new User();
 	}
 
 }
