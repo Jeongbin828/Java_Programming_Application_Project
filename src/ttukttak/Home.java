@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 public class Home extends JFrame implements ActionListener{
 	
 	private Image background = new ImageIcon("images/background.jpg").getImage();
-	private JToolBar toolBar;
-	private JButton btnSignIn;
+	private JButton btn;
+	private Container contentPane;
 
 	public Home(){
 		setTitle("¶Òµü");
@@ -18,28 +18,31 @@ public class Home extends JFrame implements ActionListener{
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		Container contentPane = getContentPane();
-		contentPane.setBackground(new Color(0xBD864F));
+//		Container contentPane = getContentPane();
+//		contentPane.setBackground(new Color(0xBD864F));
+		btn = new JButton("½ÃÀÛÇÏ±â");
+	      Font font = new Font("¸¼Àº °íµñ", Font.BOLD, 30);
+	      btn.setFont(font);
+	      btn.setForeground(Color.orange);
+	      btn.setBackground(new Color(255, 232, 120));
+	      btn.setBounds(210, 350, 200, 60);
+	      btn.setBorderPainted(false);
+	      btn.setFocusPainted(false);
+	      btn.addActionListener(this);
+	      
+	      contentPane = getContentPane();
+	      
+	      JPanel jp = new JPanel();
+	      contentPane.add(jp);
+	      jp.setLayout(null);
+	      jp.add(btn);
+
 		
-		//
-//		makeToolBar();
 		
 		setVisible(true);
 	}
 
-//	private void makeToolBar() {
-//		toolBar = new JToolBar();
-//		toolBar.setBackground(null);
-//		toolBar.setFloatable(false);
-//		
-//		btnSignIn = new JButton(new ImageIcon("images/user_fill.png"));
-//		btnSignIn.setBorderPainted(false);
-//		btnSignIn.setContentAreaFilled(false);
-//		btnSignIn.addActionListener(this);
-//		
-//		toolBar.add(new JButton(new ImageIcon("images/logo_basic.jpg")));
-//	}
-//	
+
 	public void paint(Graphics g) {
 		g.drawImage(background, 0, 0, null);
 	}
@@ -52,9 +55,9 @@ public class Home extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		
-//		if(obj == btnSignIn) {
-//			new Login();
-//		}
+		if(obj == btn) {
+			new Login();
+	}
 	}
 
 }
