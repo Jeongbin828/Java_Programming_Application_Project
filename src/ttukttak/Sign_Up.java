@@ -20,7 +20,7 @@ public class Sign_Up extends JFrame implements ActionListener{
 	
 	private Connection conn = null;
 	private Statement stmt = null;
-	private ResultSet result = null;
+//	private ResultSet result = null;
 
 	public Sign_Up() {
 		setTitle("회원가입");
@@ -99,20 +99,17 @@ public class Sign_Up extends JFrame implements ActionListener{
 			String pwCheck = textFieldPwCheck.getText();
 			String name = textFieldName.getText();
 			
-			String sql = "insert into bban.users(id, pw, pwcheck, name) "
+			String sql = "insert into users(user_id, pw, pwcheck, name) "
 					+ "values('" + id + "','" + pw + "','" + pwCheck + "','" + name + "')";
+			System.out.println(sql);
 			
 			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
-				
-				conn = DriverManager.getConnection(
-						"jdbc:oracle:thin:@127.0.0.1:1521:XE",
-						"bban",
-						"1111");
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
+				System.out.println("연결 성공");
 				
 				stmt  = conn.createStatement();
-				
-				result = stmt.executeQuery(sql);
+				int result = stmt.executeUpdate(sql);
 				
 				JOptionPane.showMessageDialog(null, "회원가입 성공", "", JOptionPane.PLAIN_MESSAGE);
 			} catch (SQLException e1) {
@@ -121,6 +118,13 @@ public class Sign_Up extends JFrame implements ActionListener{
 			} catch (ClassNotFoundException e1) {
 				System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
 				e1.printStackTrace();
+			} finally {
+				try {
+					stmt.close();
+					conn.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		} else if(obj == btnByLogin) {
 			this.setVisible(false);

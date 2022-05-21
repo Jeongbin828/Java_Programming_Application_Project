@@ -20,14 +20,16 @@ public class Login extends JFrame implements ActionListener{
 	private JLabel labelQSignUp;
 	private JPanel panelInputLogin, panelBySignUp;
 	private String id, pw;
+	private JLabel label;
 	
 	private Connection conn = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
+	private String user_id;
 
 	public Login(){
 		setTitle("로그인");
-		setSize(400, 380);
+		setSize(400, 400);
 		setLocationRelativeTo(null);
 		setResizable(false);
 		
@@ -69,7 +71,7 @@ public class Login extends JFrame implements ActionListener{
 
 	private void makeInputLogin() {
 		panelInputLogin = new JPanel();
-		panelInputLogin.setLayout(new GridLayout(4, 1, 10, 10));
+		panelInputLogin.setLayout(new GridLayout(5, 1, 10, 10));
 		panelInputLogin.setBackground(Color.WHITE);
 		
 		JLabel labelLogin = new JLabel("로그인");
@@ -91,14 +93,13 @@ public class Login extends JFrame implements ActionListener{
 		btnLogin.setBorderPainted(false);
 		btnLogin.addActionListener(this);
 		
+		label = new JLabel();
+		
 		panelInputLogin.add(labelLogin);
 		panelInputLogin.add(textFieldId);
 		panelInputLogin.add(textFieldPw);
+		panelInputLogin.add(label);
 		panelInputLogin.add(btnLogin);
-	}
-
-	public static void main(String[] args) {
-		new Login();
 	}
 
 	@Override
@@ -109,24 +110,30 @@ public class Login extends JFrame implements ActionListener{
 			id = textFieldId.getText();
 			pw = textFieldPw.getText();
 			
-			String sql = "select id, pw from bban.users where id = '" + id + "' and pw = '" + pw + "'";
+			String sql = "select user_id, pw from users where user_id = '" + id + "' and pw = '" + pw + "'";
+			System.out.println(sql);
 			
 			try {
-				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
-				conn = DriverManager.getConnection(
-						"jdbc:oracle:thin:@127.0.0.1:1521:XE",
-						"bban",
-						"1111");
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
+
 				stmt  = conn.createStatement();
 				
 				result = stmt.executeQuery(sql);
 				
 				if(result.next()) {
 					JOptionPane.showMessageDialog(null, "로그인 성공", "", JOptionPane.PLAIN_MESSAGE);
+					
+					user_id = result.getString("USER_ID");
+					label.setText("");
 					this.setVisible(false);
+					new Menu(this);
+
 				} else {
-					JOptionPane.showMessageDialog(null, "로그인 실패", "", JOptionPane.ERROR_MESSAGE);
+					label.setText("아이디, 비밀번호를 다시 입력해주세요.");
+					label.setForeground(Color.RED);
+//					JOptionPane.showMessageDialog(null, "로그인 실패", "", JOptionPane.ERROR_MESSAGE);
 					textFieldId.setText("");
 					textFieldPw.setText("");
 				}
@@ -142,6 +149,10 @@ public class Login extends JFrame implements ActionListener{
 			this.setVisible(false);
 			new Sign_Up();
 		}
+	}
+
+	public String getUser_id() {
+		return user_id;
 	}
 
 }

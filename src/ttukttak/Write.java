@@ -23,9 +23,18 @@ public class Write extends JFrame implements ActionListener{
 	
 	private Connection conn = null;
 	private Statement stmt = null;
-	private ResultSet result = null;
+//	private ResultSet result = null;
+	private String foodName, ingredient, recipe;
+	private String user_id;
+	private Object menuType;
+	private Login login;
 	
-	public Write() {
+	
+	
+	public Write(String login_id) {
+
+		user_id = login_id;
+		
 		setTitle("글쓰기");
 		setSize(1024, 682);
 		setLocationRelativeTo(null);
@@ -40,43 +49,31 @@ public class Write extends JFrame implements ActionListener{
 		
 		
 		//
-		makeBtnPrevious();
-		
-		//
 		makeWrite();
 		
-		add(panelBtnPrevious, BorderLayout.NORTH);
+		
+		
 		add(panelWrite, BorderLayout.CENTER);
 		add(panelBtn, BorderLayout.SOUTH);
 		
 		setVisible(true);
 	}
 	
-	private void makeBtnPrevious() {
-		panelBtnPrevious = new JPanel();
-		
-		btnPrevious = new JButton(new ImageIcon("images/previous.png"));
-		btnPrevious.setBackground(new Color(0xF4F3EF));
-		btnPrevious.setBorderPainted(false);
-		btnPrevious.setContentAreaFilled(false);
-		btnPrevious.addActionListener(this);
-		
-		panelBtnPrevious.add(btnPrevious, BorderLayout.WEST);
-	}
-
 	private void makeWrite() {
 		panelWrite = new JPanel();
-		panelWrite.setLayout(new GridLayout(7,1,10,10));
+		panelWrite.setLayout(new GridLayout(7,1));
 		
 		JLabel labelFoodName = new JLabel("음식 이름이 무엇인가요?");
 		textFieldFoodName = new JTextField(30);
 
 		comboBox = new JComboBox<String>(type);
+		menuType = comboBox.getSelectedItem();
+		
 		
 		JLabel labelIngredient = new JLabel("필요한 재료는 무엇인가요?");
 		textFieldIngredient = new JTextField(30);
 		
-		JLabel labelRecipe = new JLabel("레시피 : ");
+		JLabel labelRecipe = new JLabel("레시피를 알려주세요.");
 		textAreaRecipe = new JTextArea(7, 20);
 		scrollPane = new JScrollPane(textAreaRecipe);
 		
@@ -104,42 +101,40 @@ public class Write extends JFrame implements ActionListener{
 		panelBtn.add(btnWrite);
 	}
 
-	public static void main(String[] args) {
-		new Write();
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		
 		if(obj == btnWrite) {
-			String foodName = textFieldFoodName.getText();
-			String ingredient = textFieldIngredient.getText();
-			String recipe = textAreaRecipe.getText();
 			
-			String sql = "INSERT INTO BBAN.'write'"
-					+ "('index', FOODNAME, INGREDIENT, RECIPE)"
-					+ "VALUES(TEMP.NEXTVAL, '" + foodName +"', '" + ingredient + "', '" + recipe +"')";
+			foodName = textFieldFoodName.getText();
+			ingredient = textFieldIngredient.getText();
+			recipe = textAreaRecipe.getText();
+			
+			
+			System.out.println(menuType + "" + foodName + "" + ingredient + "" + recipe );
+			
+			String sql = "insert into recipe(user_id, foodname, type, ingredient, recipe) "
+					+ "values('" + user_id +"', '" + foodName + "', '" + menuType + "', '" + ingredient + "', '" + recipe + "')";
 			System.out.println(sql);
-			
+			System.out.println(user_id);
 			try {
+				System.out.println(user_id);
+
 				
-				Class.forName("oracle.jdbc.driver.OracleDriver");
-				
-				conn = DriverManager.getConnection(
-						"jdbc:oracle:thin:@127.0.0.1:1521:XE",
-						"bban",
-						"1111");
+				Class.forName("com.mysql.cj.jdbc.Driver");
+				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
+				System.out.println("연결 성공");
 				stmt  = conn.createStatement();
 				
-				result = stmt.executeQuery(sql);
+				int result = stmt.executeUpdate(sql);
 				
-				JOptionPane.showMessageDialog(null, "작성완료", "", JOptionPane.PLAIN_MESSAGE);				
+				JOptionPane.showMessageDialog(null, "작성완료", "", JOptionPane.PLAIN_MESSAGE);
 				
+				this.setVisible(false);
 				
-				//필요없는 부분 어차피 디비쓸거임 ㅄ
-//				this.setVisible(false);
-//				new Read(foodName, ingredient, recipe);
+//				new Menu();
+				new Menu(login);
 				
 			} catch (SQLException e1) {
 				System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
@@ -149,7 +144,7 @@ public class Write extends JFrame implements ActionListener{
 				e1.printStackTrace();
 			} finally {
 				try {
-					result.close();
+//					result.close();
 					stmt.close();
 					conn.close();
 				} catch (SQLException e1) {
@@ -160,10 +155,6 @@ public class Write extends JFrame implements ActionListener{
 			JOptionPane.showConfirmDialog(null, "작성을 그만하겠습니까?", "", JOptionPane.OK_CANCEL_OPTION);
 			
 			
-		} else if(obj == btnPrevious) {
-			
-			this.setVisible(false);
-			new Menu();
 		}
 	}
 

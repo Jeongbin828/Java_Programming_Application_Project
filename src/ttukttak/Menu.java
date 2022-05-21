@@ -3,22 +3,37 @@ package ttukttak;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import com.mysql.cj.xdevapi.Statement;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Connection;
 
 public class Menu extends JFrame implements ActionListener, MouseListener{
 	
 	private JPanel panelHeader;
 	private JToolBar toolBar;
-	private JLabel labelShowName;
 	private JButton btnUser, btnSave;
 	private JTabbedPane tabbedPane;
 	private JPanel panelAll, panelKorean, panelJapanese, panelWestern, panelEtc;
-
-	public Menu() {
+	private JPanel panelBtnWrite;
+	private JButton btnWrite;
+//	private Login U_data;
+	private Login login_id;
+	private String user_id;
+	
+	private Connection conn = null;
+	private Statement stmt = null;
+	
+	public Menu(Login login) {
+//		U_data = login;
+		
+		login_id = login;
+		user_id = login_id.getUser_id();
+		
 		setSize(1024, 682);
 		setLocationRelativeTo(null);
 		setResizable(false);
@@ -31,15 +46,28 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		makeHeader();
 		
 		//
-		makeBtnMenu();
+		makeMenu();
+		
+		//
+		makeBtnWrite();
 		
 		
 		add(panelHeader, BorderLayout.NORTH);
 		add(tabbedPane, BorderLayout.CENTER);
+		add(panelBtnWrite, BorderLayout.SOUTH);
 		
 		setVisible(true);
 	}
 	
+	private void makeBtnWrite() {
+		panelBtnWrite = new JPanel();
+		
+		btnWrite = new JButton("¿€º∫");
+		btnWrite.addActionListener(this);
+		
+		panelBtnWrite.add(btnWrite);
+	}
+
 	private void makeHeader() {
 		panelHeader = new JPanel();
 		panelHeader.setBackground(new Color(0xF4F3EF));
@@ -51,9 +79,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		toolBar = new JToolBar();
 		toolBar.setBackground(new Color(0xF4F3EF));
 		toolBar.setBorderPainted(false);
-		
-//		labelShowName = new JLabel("");
-		
 		
 		btnSave = new JButton(new ImageIcon("images/save_fill.png"));
 		btnSave.setBackground(new Color(0xF4F3EF));
@@ -72,7 +97,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		panelHeader.add(toolBar, BorderLayout.EAST);
 	}
 
-	private void makeBtnMenu() {
+	private void makeMenu() {
 		tabbedPane = new JTabbedPane();
 		tabbedPane.setBackground(new Color(0xF4F3EF));
 		tabbedPane.setFont(new Font("", Font.BOLD, 15));
@@ -102,22 +127,26 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 //		btnWestern.setHorizontalTextPosition(JButton.CENTER);
 		
 	}
-
-	public static void main(String[] args) {
-		new Menu();
-	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		
-		if(obj == btnSave) {
+		if(obj == btnWrite) {
+			
 			this.setVisible(false);
-			new Save();
-		} else if(obj == btnUser) {
-			this.setVisible(false);
-			new User();
-		}
+//			user_id = login_id.getUser_id();
+			new Write(user_id);
+		} 
+		
+//		 else if(obj == btnSave) {
+//			this.setVisible(false);
+//			
+//			new Save();
+//		} else if(obj == btnUser) {
+//			this.setVisible(false);
+//			
+//		} 
 	}
 
 	@Override

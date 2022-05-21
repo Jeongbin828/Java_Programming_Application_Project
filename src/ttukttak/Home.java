@@ -20,25 +20,24 @@ public class Home extends JFrame implements ActionListener{
 		
 //		Container contentPane = getContentPane();
 //		contentPane.setBackground(new Color(0xBD864F));
+		
 		btn = new JButton("Ω√¿€«œ±‚");
-	      Font font = new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 30);
-	      btn.setFont(font);
-	      btn.setForeground(Color.orange);
-	      btn.setBackground(new Color(255, 232, 120));
-	      btn.setBounds(210, 350, 200, 60);
-	      btn.setBorderPainted(false);
-	      btn.setFocusPainted(false);
-	      btn.addActionListener(this);
+	    Font font = new Font("∏º¿∫ ∞ÌµÒ", Font.BOLD, 30);
+	    btn.setFont(font);
+	    btn.setForeground(Color.orange);
+	    btn.setBackground(new Color(255, 232, 120));
+	    btn.setBounds(210, 350, 200, 60);
+	    btn.setBorderPainted(false);
+	    btn.setFocusPainted(false);
+	    btn.addActionListener(this);
 	      
-	      contentPane = getContentPane();
+	    contentPane = getContentPane();
 	      
-	      JPanel jp = new JPanel();
-	      contentPane.add(jp);
-	      jp.setLayout(null);
-	      jp.add(btn);
+	    JPanel jp = new JPanel();
+	    contentPane.add(jp);
+	    jp.setLayout(null);
+	    jp.add(btn);
 
-		
-		
 		setVisible(true);
 	}
 
@@ -57,7 +56,7 @@ public class Home extends JFrame implements ActionListener{
 		
 		if(obj == btn) {
 			new Login();
-	}
+		}
 	}
 
 }
