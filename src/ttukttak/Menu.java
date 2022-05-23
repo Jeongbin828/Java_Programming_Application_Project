@@ -38,6 +38,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		setLocationRelativeTo(null);
 		setResizable(false);
 		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container contentPane = getContentPane();
 		contentPane.setBackground(new Color(0xF4F3EF));
@@ -62,7 +63,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 	private void makeBtnWrite() {
 		panelBtnWrite = new JPanel();
 		
-		btnWrite = new JButton("작성");
+		btnWrite = new JButton("글쓰기");
 		btnWrite.addActionListener(this);
 		
 		panelBtnWrite.add(btnWrite);

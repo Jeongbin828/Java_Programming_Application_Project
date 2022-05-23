@@ -1,9 +1,18 @@
 package ttukttak;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -28,6 +37,10 @@ public class Write extends JFrame implements ActionListener{
 	private String user_id;
 	private Object menuType;
 	private Login login;
+	private JLabel labelImage;
+	private JButton btnImage;
+	private JFileChooser fileChooser;
+	private ImageIcon image;
 	
 	
 	
@@ -60,8 +73,16 @@ public class Write extends JFrame implements ActionListener{
 	}
 	
 	private void makeWrite() {
+		
+		
 		panelWrite = new JPanel();
-		panelWrite.setLayout(new GridLayout(7,1));
+		panelWrite.setLayout(new GridLayout(9,1));
+		
+		
+		
+		labelImage = new JLabel(image);
+		btnImage = new JButton("사진 첨부");
+		btnImage.addActionListener(this);
 		
 		JLabel labelFoodName = new JLabel("음식 이름이 무엇인가요?");
 		textFieldFoodName = new JTextField(30);
@@ -89,6 +110,8 @@ public class Write extends JFrame implements ActionListener{
 		btnWrite.setContentAreaFilled(false);
 		btnWrite.addActionListener(this);
 		
+		panelWrite.add(labelImage);
+		panelWrite.add(btnImage);
 		panelWrite.add(labelFoodName);
 		panelWrite.add(textFieldFoodName);
 		panelWrite.add(comboBox);
@@ -104,9 +127,24 @@ public class Write extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
-		
-		if(obj == btnWrite) {
-			
+		if(obj == btnImage) {
+				fileChooser = new JFileChooser();
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("JPG", "jpg"));
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("PNG", "png"));
+				fileChooser.showOpenDialog(this);
+				
+				File selectedFile = fileChooser.getSelectedFile();
+				try {
+					BufferedImage bufferedImage = ImageIO.read(selectedFile);
+					image = new ImageIcon(bufferedImage);
+					labelImage.setIcon(image);
+					
+				} catch (IOException e2) {
+					e2.printStackTrace();
+				}
+		} else if(obj == btnWrite) {
+
+	
 			foodName = textFieldFoodName.getText();
 			ingredient = textFieldIngredient.getText();
 			recipe = textAreaRecipe.getText();
@@ -114,8 +152,8 @@ public class Write extends JFrame implements ActionListener{
 			
 			System.out.println(menuType + "" + foodName + "" + ingredient + "" + recipe );
 			
-			String sql = "insert into recipe(user_id, foodname, type, ingredient, recipe) "
-					+ "values('" + user_id +"', '" + foodName + "', '" + menuType + "', '" + ingredient + "', '" + recipe + "')";
+			String sql = "insert into recipe(user_id, image, foodname, type, ingredient, recipe) "
+					+ "values('" + user_id +"', '" + image + "', '"+ foodName + "', '" + menuType + "', '" + ingredient + "', '" + recipe + "')";
 			System.out.println(sql);
 			System.out.println(user_id);
 			try {
@@ -134,7 +172,7 @@ public class Write extends JFrame implements ActionListener{
 				this.setVisible(false);
 				
 //				new Menu();
-				new Menu(login);
+//				new Menu(login);
 				
 			} catch (SQLException e1) {
 				System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
@@ -152,10 +190,9 @@ public class Write extends JFrame implements ActionListener{
 				}
 			}
 		} else if(obj == btnCancel) {
-			JOptionPane.showConfirmDialog(null, "작성을 그만하겠습니까?", "", JOptionPane.OK_CANCEL_OPTION);
-			
-			
+			JOptionPane.showConfirmDialog(null, "글쓰기를 그만 두시나요?\n작성한 글이 저장되지 않아요", "", JOptionPane.OK_CANCEL_OPTION);
 		}
+		
 	}
 
 }

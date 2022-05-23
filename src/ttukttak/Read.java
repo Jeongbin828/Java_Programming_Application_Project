@@ -2,6 +2,8 @@ package ttukttak;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,6 +23,10 @@ public class Read extends JFrame{
 	private Connection conn = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
+	private Blob image;
+	private String foodName;
+	private String ingredient;
+	private String recipe;
 
 	public Read() {
 	
@@ -41,20 +47,58 @@ public class Read extends JFrame{
 	}
 
 	private void makeRead() {
+
+		
+		String sql = "select * from recipe where recipe_index = '11'";
+		
+		try {
+			System.out.println(sql);
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
+			System.out.println("연결 성공");
+			stmt  = conn.createStatement();
+		
+			result = stmt.executeQuery(sql);
+			
+			while(result.next()) {
+				
+				foodName = result.getString("foodname");
+				ingredient = result.getString("ingredient");
+				recipe = result.getString("recipe");
+				
+			}
+			
+		
+		
+		
+		} catch (SQLException e1) {
+			System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
+			e1.printStackTrace();
+		} finally {
+			try {
+				result.close();
+				stmt.close();
+				conn.close();
+			}catch (SQLException e1) {
+				e1.printStackTrace();
+			}
 		
 		panelTop = new JPanel();
 		panelTop.setLayout(new BorderLayout());
 		
-		imageIcon = new ImageIcon("");
+		imageIcon = new ImageIcon();
 		labelImage = new JLabel(imageIcon);
 		
 		panelTitle = new JPanel();
 		
-		labelFoodName = new JLabel();
+		labelFoodName = new JLabel(foodName);
 		labelFoodName.setPreferredSize(new Dimension(300, 300));
 		labelFoodName.setBackground(Color.red);
 		
-		labelIngredient = new JLabel();
+		labelIngredient = new JLabel(ingredient);
 		labelIngredient.setPreferredSize(new Dimension(300, 300));
 		labelIngredient.setOpaque(true);
 		labelIngredient.setBackground(Color.BLUE);
@@ -66,15 +110,16 @@ public class Read extends JFrame{
 		panelTop.add(panelTitle, BorderLayout.SOUTH);
 		
 		panelBottom = new JPanel();
-		labelRecipe = new JLabel();
+		labelRecipe = new JLabel(recipe);
 		labelRecipe.setBackground(Color.GREEN);
 		
 		panelBottom.add(labelRecipe);
+		}
+
 		
 	}
-
 	public static void main(String[] args) {
-
+		new Read();
 	}
 
 }
