@@ -76,38 +76,58 @@ public class Write extends JFrame implements ActionListener{
 		
 		
 		panelWrite = new JPanel();
-		panelWrite.setLayout(new GridLayout(9,1));
+		panelWrite.setLayout(null);
 		
 		
 		
 		labelImage = new JLabel(image);
-		btnImage = new JButton("사진 첨부");
+		btnImage = new JButton("사진");
+		//btnImage = new JButton("사진 첨부");
+		btnImage.setBounds(330, 130, 115, 125);
 		btnImage.addActionListener(this);
 		
-		JLabel labelFoodName = new JLabel("음식 이름이 무엇인가요?");
-		textFieldFoodName = new JTextField(30);
+	      
+	    JLabel labelImage = new JLabel("사진 첨부");
+	    labelImage.setBounds(360, 250, 100, 25);
+	      
+	    JLabel labelFoodName = new JLabel("음식 이름이 무엇인가요?");
+	    labelFoodName.setBounds(465, 110, 300, 30);
+	    textFieldFoodName = new JTextField(25);
+	    textFieldFoodName.setBounds(465, 140, 235, 25);
 
 		comboBox = new JComboBox<String>(type);
 		menuType = comboBox.getSelectedItem();
+		comboBox.setBounds(330, 60, 370, 25);
 		
 		
 		JLabel labelIngredient = new JLabel("필요한 재료는 무엇인가요?");
+		labelIngredient.setBounds(465, 185, 300, 30);
+
 		textFieldIngredient = new JTextField(30);
+		textFieldIngredient.setBounds(465, 215, 235, 25);
+
 		
 		JLabel labelRecipe = new JLabel("레시피를 알려주세요.");
+		labelRecipe.setBounds(330, 270, 300, 30);
 		textAreaRecipe = new JTextArea(7, 20);
 		scrollPane = new JScrollPane(textAreaRecipe);
+		scrollPane.setBounds(330, 300, 370, 270);
+		     
 		
 		panelBtn = new JPanel();
 		
 		btnCancel = new JButton("취소");
 		btnCancel.setBorderPainted(false);
 		btnCancel.setContentAreaFilled(false);
+		 btnCancel.setBorder(BorderFactory.createEmptyBorder(0, 280, 30, 0));
 		btnCancel.addActionListener(this);
 		
 		btnWrite = new JButton("작성");
 		btnWrite.setBorderPainted(false);
 		btnWrite.setContentAreaFilled(false);
+		btnWrite.setBorder(BorderFactory.createEmptyBorder(0, 40, 30, 0));
+	      
+
 		btnWrite.addActionListener(this);
 		
 		panelWrite.add(labelImage);
@@ -169,11 +189,11 @@ public class Write extends JFrame implements ActionListener{
 				
 				JOptionPane.showMessageDialog(null, "작성완료", "", JOptionPane.PLAIN_MESSAGE);
 				
-				this.setVisible(false);
+//				this.setVisible(false);
+				this.dispose();
 				
-//				new Menu();
-//				new Menu(login);
-				
+				new Menu(user_id);
+			
 			} catch (SQLException e1) {
 				System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
 				e1.printStackTrace();
@@ -191,6 +211,7 @@ public class Write extends JFrame implements ActionListener{
 			}
 		} else if(obj == btnCancel) {
 			JOptionPane.showConfirmDialog(null, "글쓰기를 그만 두시나요?\n작성한 글이 저장되지 않아요", "", JOptionPane.OK_CANCEL_OPTION);
+		
 		}
 		
 	}

@@ -1,8 +1,13 @@
 package ttukttak;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +28,6 @@ public class Read extends JFrame{
 	private Connection conn = null;
 	private Statement stmt = null;
 	private ResultSet result = null;
-	private Blob image;
 	private String foodName;
 	private String ingredient;
 	private String recipe;
@@ -67,10 +71,6 @@ public class Read extends JFrame{
 				recipe = result.getString("recipe");
 				
 			}
-			
-		
-		
-		
 		} catch (SQLException e1) {
 			System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
 			e1.printStackTrace();

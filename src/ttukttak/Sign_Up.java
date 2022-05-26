@@ -111,7 +111,7 @@ public class Sign_Up extends JFrame implements ActionListener{
 				stmt  = conn.createStatement();
 				int result = stmt.executeUpdate(sql);
 				
-				JOptionPane.showMessageDialog(null, "회원가입 성공", "", JOptionPane.PLAIN_MESSAGE);
+				JOptionPane.showMessageDialog(null, "회원가입 완료", "", JOptionPane.PLAIN_MESSAGE);
 			} catch (SQLException e1) {
 				System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
 				e1.printStackTrace();
