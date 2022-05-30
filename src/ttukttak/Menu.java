@@ -14,6 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.stream.IntStream;
 
 public class Menu extends JFrame implements ActionListener, MouseListener{
 	
@@ -35,14 +36,18 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 	private ImageIcon image;
 	private JButton buttonSource;
 	private String recipeIndex;
+	private String index;
+	private JLabel labelindex;
+	private String sql;
 	
+//	public Menu(String user_id) {
+//		this.user_id = user_id;
+//	}
 	public Menu(String user_id) {
-		this.user_id = user_id;
-	}
-	public Menu(Login login) {
 		
-		login_id = login;
-		user_id = login_id.getUser_id();
+		this.user_id = user_id;
+		
+		System.out.println(user_id);
 		
 		setSize(1024, 682);
 		setLocationRelativeTo(null);
@@ -70,6 +75,9 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		setVisible(true);
 	}
 	
+	public String getUser_id() {
+		return user_id;
+	}
 	private void makeBtnWrite() {
 		panelBtnWrite = new JPanel();
 		panelBtnWrite.setLayout(new BorderLayout());
@@ -149,8 +157,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 			result = stmt.executeQuery(sql);
 			
 			while(result.next()) {
-				
-				
 			
 				recipeIndex = result.getString("recipe_index");
 				String foodName = result.getString("foodname");
@@ -163,7 +169,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 
 				btnList.setPreferredSize(new Dimension(500, 150));
 				
-				JLabel labelindex = new JLabel(recipeIndex);
+				labelindex = new JLabel(recipeIndex);
 				JLabel labelImage = new JLabel();
 				JLabel foodname = new JLabel(foodName);
 				JLabel ing = new JLabel(ingredient);
@@ -179,13 +185,10 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 				
 				panelAll.add(btnList);
 				labelindex.setVisible(false);
-				
 				System.out.println(btnList.getAccessibleContext().getAccessibleIndexInParent() + 1);
 				System.out.println(foodName);
 				System.out.println(ingredient);
 			}
-		
-		
 		} catch (SQLException e1) {
 			System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
 			e1.printStackTrace();
@@ -202,7 +205,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 			}
 		}
 		
-		
 	}
 	
 	@Override
@@ -212,6 +214,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		if(obj == btnWrite) {
 			
 			this.setVisible(false);
+		
 //			user_id = login_id.getUser_id();
 			new Write(user_id);
 		} else if(obj == btnList) {
@@ -219,22 +222,42 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 			
 		} else if(obj == btnPick) {
 			
+			index = labelindex.getText();
 			
 			
-			
-			String sql = "insert into recipe_index values('" + "')";
 			
 			try {
-				
-				System.out.println(sql);
 				Class.forName("com.mysql.cj.jdbc.Driver");
 				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
-				System.out.println("연결 성공");
-				stmt = conn.createStatement();
-			
-//				result = stmt.executeQuery(sql);
 				
-//				while(result.next()) {
+				sql = "select save from pick where user_id = '" + user_id +"' and recipe_index = '" + index + "'";
+				stmt = conn.createStatement();
+				
+				result = stmt.executeQuery(sql);
+				System.out.println(sql);
+				
+				if(result.next()) {
+					String save = result.getString("save");
+					if(save.equals("1")) {
+						sql = "update pick set save = 0 where user_id = '" + user_id + "' and recipe_index = '" + index + "'";
+						stmt = conn.createStatement();
+						int result = stmt.executeUpdate(sql);
+					}else {
+						sql = "update pick set save = 1 where user_id = '" + user_id + "' and recipe_index = '" + index + "'";
+						stmt = conn.createStatement();
+						result = stmt.executeQuery(sql);
+					}
+				}else {
+//					sql = "insert into pick(user_id, recipe_index, save) values('" + user_id + "', '" + index + "', 1)";
+//					
+//					stmt = conn.createStatement();
+//				
+//					int result = stmt.executeUpdate(sql);
+					System.out.println("에라모르겠다");
+//					
+
+				}
+//				//				while(result.next()) {
 //					
 //				}
 //			

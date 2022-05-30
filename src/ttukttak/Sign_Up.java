@@ -20,11 +20,12 @@ public class Sign_Up extends JFrame implements ActionListener{
 	
 	private Connection conn = null;
 	private Statement stmt = null;
+	private JLabel labelCheck;
 //	private ResultSet result = null;
 
 	public Sign_Up() {
 		setTitle("회원가입");
-		setSize(400, 420);
+		setSize(400, 450);
 		setResizable(false);
 		
 		setLayout(new FlowLayout());
@@ -66,7 +67,7 @@ public class Sign_Up extends JFrame implements ActionListener{
 
 	private void makeInputSignUp() {
 		panelInputSignUp = new JPanel();
-		panelInputSignUp.setLayout(new GridLayout(6, 1, 5, 5));
+		panelInputSignUp.setLayout(new GridLayout(7, 1, 5, 5));
 		panelInputSignUp.setBackground(Color.WHITE);
 		
 		JLabel labelSignUp = new JLabel("회원가입");
@@ -74,12 +75,21 @@ public class Sign_Up extends JFrame implements ActionListener{
 		labelSignUp.setFont(new Font("돋움", Font.PLAIN, 25));
 		
 		textFieldId = new JTextField(20);
+		textFieldId.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		
 		textFieldPw = new JPasswordField(20);
+		textFieldPw.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		
 		textFieldPwCheck = new JPasswordField(20);
+		textFieldPwCheck.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
+		
 		textFieldName = new JTextField(20);
+		textFieldName.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		
 		btnSignUp = new RoundedButton("회원가입");
 		btnSignUp.addActionListener(this);
+		
+		labelCheck = new JLabel("");
 		
 		panelInputSignUp.add(labelSignUp);
 		panelInputSignUp.add(textFieldId);
@@ -87,6 +97,7 @@ public class Sign_Up extends JFrame implements ActionListener{
 		panelInputSignUp.add(textFieldPwCheck);
 		panelInputSignUp.add(textFieldName);
 		panelInputSignUp.add(btnSignUp);
+		panelInputSignUp.add(labelCheck);
 	}
 
 	@Override
@@ -94,37 +105,43 @@ public class Sign_Up extends JFrame implements ActionListener{
 		Object obj = e.getSource();
 		
 		if(obj == btnSignUp) {
-			String id = textFieldId.getText();
-			String pw = textFieldPw.getText();
-			String pwCheck = textFieldPwCheck.getText();
-			String name = textFieldName.getText();
-			
-			String sql = "insert into users(user_id, pw, pwcheck, name) "
-					+ "values('" + id + "','" + pw + "','" + pwCheck + "','" + name + "')";
-			System.out.println(sql);
-			
-			try {
-				Class.forName("com.mysql.cj.jdbc.Driver");
-				conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
-				System.out.println("연결 성공");
+			if(textFieldPw.getText().equals(textFieldPwCheck.getText())) {
+				String id = textFieldId.getText();
+				String pw = textFieldPw.getText();
+				String pwCheck = textFieldPwCheck.getText();
+				String name = textFieldName.getText();
 				
-				stmt  = conn.createStatement();
-				int result = stmt.executeUpdate(sql);
+				String sql = "insert into users(user_id, pw, pwcheck, name) "
+						+ "values('" + id + "','" + pw + "','" + pwCheck + "','" + name + "')";
+				System.out.println(sql);
 				
-				JOptionPane.showMessageDialog(null, "회원가입 완료", "", JOptionPane.PLAIN_MESSAGE);
-			} catch (SQLException e1) {
-				System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e1) {
-				System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
-				e1.printStackTrace();
-			} finally {
 				try {
-					stmt.close();
-					conn.close();
+					Class.forName("com.mysql.cj.jdbc.Driver");
+					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
+					System.out.println("연결 성공");
+					
+					stmt  = conn.createStatement();
+					int result = stmt.executeUpdate(sql);
+				
+					JOptionPane.showMessageDialog(null, "회원가입 완료", "", JOptionPane.PLAIN_MESSAGE);
+					this.setVisible(false);
+					new Login();
 				} catch (SQLException e1) {
+					System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
 					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
+					e1.printStackTrace();
+				} finally {
+					try {
+						stmt.close();
+						conn.close();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					}
 				}
+			}else {
+				labelCheck.setText("비밀번호 확인을 다시 해주세영");
 			}
 		} else if(obj == btnByLogin) {
 			this.setVisible(false);

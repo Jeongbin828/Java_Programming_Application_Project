@@ -43,7 +43,6 @@ public class Read extends JFrame{
 		//
 		makeRead();
 		
-		
 		add(panelTop, BorderLayout.NORTH);
 		add(panelBottom, BorderLayout.SOUTH);
 		
@@ -52,7 +51,6 @@ public class Read extends JFrame{
 
 	private void makeRead() {
 
-		
 		String sql = "select * from recipe where recipe_index = '11'";
 		
 		try {
@@ -65,11 +63,9 @@ public class Read extends JFrame{
 			result = stmt.executeQuery(sql);
 			
 			while(result.next()) {
-				
 				foodName = result.getString("foodname");
 				ingredient = result.getString("ingredient");
 				recipe = result.getString("recipe");
-				
 			}
 		} catch (SQLException e1) {
 			System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");

@@ -42,6 +42,7 @@ public class Write extends JFrame implements ActionListener{
 	private JFileChooser fileChooser;
 	private ImageIcon image;
 	
+	//private Menu menu;
 	
 	
 	public Write(String login_id) {
@@ -78,18 +79,13 @@ public class Write extends JFrame implements ActionListener{
 		panelWrite = new JPanel();
 		panelWrite.setLayout(null);
 		
-		
-		
 		labelImage = new JLabel(image);
-		btnImage = new JButton("사진");
-		//btnImage = new JButton("사진 첨부");
-		btnImage.setBounds(330, 130, 115, 125);
+		labelImage.setBounds(330, 130, 115, 125);
+		
+		btnImage = new JButton("사진 첨부");
+		btnImage.setBounds(360, 250, 100, 25);
 		btnImage.addActionListener(this);
 		
-	      
-	    JLabel labelImage = new JLabel("사진 첨부");
-	    labelImage.setBounds(360, 250, 100, 25);
-	      
 	    JLabel labelFoodName = new JLabel("음식 이름이 무엇인가요?");
 	    labelFoodName.setBounds(465, 110, 300, 30);
 	    textFieldFoodName = new JTextField(25);
@@ -99,13 +95,11 @@ public class Write extends JFrame implements ActionListener{
 		menuType = comboBox.getSelectedItem();
 		comboBox.setBounds(330, 60, 370, 25);
 		
-		
 		JLabel labelIngredient = new JLabel("필요한 재료는 무엇인가요?");
 		labelIngredient.setBounds(465, 185, 300, 30);
 
 		textFieldIngredient = new JTextField(30);
 		textFieldIngredient.setBounds(465, 215, 235, 25);
-
 		
 		JLabel labelRecipe = new JLabel("레시피를 알려주세요.");
 		labelRecipe.setBounds(330, 270, 300, 30);
@@ -113,13 +107,12 @@ public class Write extends JFrame implements ActionListener{
 		scrollPane = new JScrollPane(textAreaRecipe);
 		scrollPane.setBounds(330, 300, 370, 270);
 		     
-		
 		panelBtn = new JPanel();
 		
 		btnCancel = new JButton("취소");
 		btnCancel.setBorderPainted(false);
 		btnCancel.setContentAreaFilled(false);
-		 btnCancel.setBorder(BorderFactory.createEmptyBorder(0, 280, 30, 0));
+		btnCancel.setBorder(BorderFactory.createEmptyBorder(0, 280, 30, 0));
 		btnCancel.addActionListener(this);
 		
 		btnWrite = new JButton("작성");

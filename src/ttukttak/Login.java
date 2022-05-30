@@ -1,6 +1,8 @@
 package ttukttak;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,10 +82,12 @@ public class Login extends JFrame implements ActionListener{
 		labelLogin.setFont(font);
 		
 		textFieldId = new JTextField(20);
+		textFieldId.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		//textFieldId.setFont(new Font());
 		//textFieldId.setBorder(null);
 		
 		textFieldPw = new JPasswordField(20);
+		textFieldPw.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		//textFieldPw.setFont(new Font());
 		//textFieldPw.setBorder(null);
 		
@@ -128,7 +132,7 @@ public class Login extends JFrame implements ActionListener{
 					user_id = result.getString("USER_ID");
 					label.setText("");
 					this.setVisible(false);
-					new Menu(this);
+					new Menu(id);
 
 				} else {
 					label.setText("아이디, 비밀번호를 다시 입력해주세요.");
