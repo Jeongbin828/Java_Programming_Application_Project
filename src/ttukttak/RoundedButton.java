@@ -15,8 +15,8 @@ public class RoundedButton extends JButton{
 	      @Override 
 	      protected void paintComponent(Graphics g) {
 	    	  
-	         Color colorBackground = new Color(0,0,0); //배경색 결정
-	         Color colorFont = new Color(255,255,255); //글자색 결정
+	         Color colorBackground = new Color(0, 0, 0); // 배경색 결정
+	         Color colorFont = new Color(255, 255, 255); // 글자색 결정
 	         
 	         int width = getWidth(); 
 	         int height = getHeight(); 

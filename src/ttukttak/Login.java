@@ -105,6 +105,7 @@ public class Login extends JFrame implements ActionListener{
 	      labelId.setBounds(60, 0, 30, 30);
 	      
 	      textFieldId = new JTextField(20);
+	      textFieldId.setFont(sub_font);
 	      textFieldId.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.black));
 	      textFieldId.setBounds(100, 0, 200, 30);
 	      

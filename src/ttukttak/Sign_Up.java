@@ -184,7 +184,7 @@ public class Sign_Up extends JFrame implements ActionListener{
 								+ "values('" + id + "', '" + pw + "', '" + name +"')";
 						
 						stmt = conn.createStatement();
-//						int result = stmt.executeUpdate(sql);
+						int result = stmt.executeUpdate(sql);
 						
 						JOptionPane.showMessageDialog(null, "회원가입 완료", "", JOptionPane.PLAIN_MESSAGE);
 						
@@ -209,49 +209,6 @@ public class Sign_Up extends JFrame implements ActionListener{
 				}
 			}
 			
-
-			
-//			if(textFieldPw.getText().equals(textFieldPwCheck.getText())) {
-//				String id = textFieldId.getText();
-//				String pw = textFieldPw.getText();
-////				String pwCheck = textFieldPwCheck.getText();
-//				String name = textFieldName.getText();
-//				
-//				String sql = "insert into users(user_id, pw, pwcheck, name) "
-//						+ "values('" + id + "','" + pw + "','" + textFieldPwCheck + "','" + name + "')";
-//				
-//				
-//				
-//				System.out.println(sql);
-//				
-//				try {
-//					Class.forName("com.mysql.cj.jdbc.Driver");
-//					conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
-//					System.out.println("연결 성공");
-//					
-//					stmt  = conn.createStatement();
-//					int result = stmt.executeUpdate(sql);
-//				
-//					JOptionPane.showMessageDialog(null, "회원가입 완료", "", JOptionPane.PLAIN_MESSAGE);
-//					this.setVisible(false);
-//					new Login();
-//				} catch (SQLException e1) {
-//					System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
-//					e1.printStackTrace();
-//				} catch (ClassNotFoundException e1) {
-//					System.out.println("ClassNotFoundException 예외 발생 : 해당 드라이버가 없습니다.");
-//					e1.printStackTrace();
-//				} finally {
-//					try {
-//						stmt.close();
-//						conn.close();
-//					} catch (SQLException e1) {
-//						e1.printStackTrace();
-//					}
-//				}
-//			}else {
-//				errorPw.setText("비밀번호 확인을 다시 해주세영");
-//			}
 		} else if(obj == btnByLogin) {
 			this.setVisible(false);
 			new Login();
