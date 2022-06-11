@@ -3,6 +3,7 @@ package ttukttak;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -19,7 +20,6 @@ public class Read extends JFrame{
 	
 
 	private Container c;
-	private JPanel panelTop, panelBottom, panelTitle;
 	private ImageIcon imageIcon;
 	private JLabel labelImage;
 	private JLabel labelFoodName;
@@ -31,6 +31,13 @@ public class Read extends JFrame{
 	private String foodName;
 	private String ingredient;
 	private String recipe;
+	private BufferedImage bimage;
+	private String image;
+	private Panel panelPick;
+	private JButton pick;
+	private JPanel panelRead;
+	private Font name_font, main_font, btn_font;
+	private RoundedButton btnMenu;
 
 	public Read() {
 	
@@ -40,39 +47,52 @@ public class Read extends JFrame{
 		
 		setLayout(new BorderLayout());
 		
+		name_font = new Font("ì¹´í˜24 ì¨ë¼ìš´ë“œ", 0,30);
+	    main_font = new Font("ì¹´í˜24 ì¨ë¼ìš´ë“œ", 0,14);
+	    btn_font = new Font("ì¹´í˜24 ì¨ë¼ìš´ë“œ", 0, 12);
+	      
+	    Container contentPane = getContentPane();
+	    contentPane.setBackground(Color.WHITE);
+		
 		//
 		makeRead();
 		
-		add(panelTop, BorderLayout.NORTH);
-		add(panelBottom, BorderLayout.SOUTH);
+	    add(panelPick, BorderLayout.NORTH);
+	    add(panelRead, BorderLayout.CENTER);
 		
 		setVisible(true);
 	}
 
 	private void makeRead() {
 
-		String sql = "select * from recipe where recipe_index = '11'";
+		String sql = "select image, foodname, ingredient, recipe from recipe where recipe_index = '16'";
 		
 		try {
 			System.out.println(sql);
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/database?useUnicode=true&serverTimezone=UTC", "root", "manager");
-			System.out.println("¿¬°á ¼º°ø");
 			stmt  = conn.createStatement();
-		
+//		
 			result = stmt.executeQuery(sql);
 			
 			while(result.next()) {
+				// ë°ì´í„°ë² ì´ìŠ¤ì— ì €ì¥ëœ ì´ë¯¸ì§€ ë¶ˆëŸ¬ì˜¤ê¸°
+				InputStream image = result.getBinaryStream("image");
+				bimage = ImageIO.read(image);
+				
+				//				
 				foodName = result.getString("foodname");
 				ingredient = result.getString("ingredient");
 				recipe = result.getString("recipe");
 			}
 		} catch (SQLException e1) {
-			System.out.println("SQLException ¿¹¿Ü ¹ß»ı : Á¢¼Ó Á¤º¸ È®ÀÎÀÌ ÇÊ¿äÇÕ´Ï´Ù.");
+			System.out.println("SQLException ì˜ˆì™¸ ë°œìƒ : ì ‘ì† ì •ë³´ í™•ì¸ì´ í•„ìš”í•©ë‹ˆë‹¤.");
 			e1.printStackTrace();
 		} catch (ClassNotFoundException e1) {
-			System.out.println("ClassNotFoundException ¿¹¿Ü ¹ß»ı : ÇØ´ç µå¶óÀÌ¹ö°¡ ¾ø½À´Ï´Ù.");
+			System.out.println("ClassNotFoundException ì˜ˆì™¸ ë°œìƒ : í•´ë‹¹ ë“œë¼ì´ë²„ê°€ ì—†ìŠµë‹ˆë‹¤.");
 			e1.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("ì €ì¥ëœ ì´ë¯¸ì§€ê°€ ì—†ìŠµë‹ˆë‹¤.");
 		} finally {
 			try {
 				result.close();
@@ -81,38 +101,52 @@ public class Read extends JFrame{
 			}catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-		
-		panelTop = new JPanel();
-		panelTop.setLayout(new BorderLayout());
-		
-		imageIcon = new ImageIcon();
-		labelImage = new JLabel(imageIcon);
-		
-		panelTitle = new JPanel();
-		
-		labelFoodName = new JLabel(foodName);
-		labelFoodName.setPreferredSize(new Dimension(300, 300));
-		labelFoodName.setBackground(Color.red);
-		
-		labelIngredient = new JLabel(ingredient);
-		labelIngredient.setPreferredSize(new Dimension(300, 300));
-		labelIngredient.setOpaque(true);
-		labelIngredient.setBackground(Color.BLUE);
-		
-		panelTitle.add(labelFoodName, BorderLayout.NORTH);
-		panelTitle.add(labelIngredient, BorderLayout.SOUTH);
-		
-		panelTop.add(labelImage, BorderLayout.NORTH);
-		panelTop.add(panelTitle, BorderLayout.SOUTH);
-		
-		panelBottom = new JPanel();
-		labelRecipe = new JLabel(recipe);
-		labelRecipe.setBackground(Color.GREEN);
-		
-		panelBottom.add(labelRecipe);
 		}
-
-		
+	         panelPick = new Panel();
+	         panelPick.setBackground(Color.WHITE);
+	         panelPick.setLayout(new BorderLayout());
+	         
+	         pick = new JButton("ì°œí•˜ê¸°");
+	         pick.setFont(btn_font);
+	         pick.setBorder(BorderFactory.createEmptyBorder(100, 350, 0, 0)); // ì—¬ë°± ë„£ê¸°
+	         pick.setBorderPainted(false);
+	         pick.setContentAreaFilled(false);
+	      
+	         
+	         panelRead = new JPanel();
+	         panelRead.setBackground(Color.WHITE);
+	         panelRead.setLayout(null);
+	          
+	         imageIcon = new ImageIcon(bimage);
+	         labelImage = new JLabel(imageIcon);
+	         labelImage.setBounds(330, 110, 115, 125);
+	            
+	         labelFoodName = new JLabel(foodName);
+	         labelFoodName.setBounds(480, 30, 300, 30);
+	         labelFoodName.setFont(name_font);
+	            
+	         labelIngredient = new JLabel(ingredient);
+	         labelIngredient.setBounds(480, 80, 300, 30);
+	         labelIngredient.setFont(main_font);
+	            
+	         labelRecipe = new JLabel(recipe);
+	         labelRecipe.setBounds(340, 170, 300, 30);
+	         labelRecipe.setFont(main_font);
+	          
+	          
+	         btnMenu = new RoundedButton("ë©”ë‰´ë¡œ ëŒì•„ê°€ê¸°");
+	         btnMenu.setBounds(570, 450, 130, 30);
+	         btnMenu.setFont(btn_font);
+	         btnMenu.setBorderPainted(false);
+	            
+	         panelPick.add(pick, BorderLayout.SOUTH);
+	         panelPick.setBackground(Color.WHITE);
+	          
+	         panelRead.add(labelImage);
+	         panelRead.add(labelFoodName);
+	         panelRead.add(labelIngredient);
+	         panelRead.add(labelRecipe);
+	         panelRead.add(btnMenu);
 	}
 	public static void main(String[] args) {
 		new Read();

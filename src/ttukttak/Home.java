@@ -6,57 +6,54 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Home extends JFrame implements ActionListener{
-	
-	private Image background = new ImageIcon("images/background.jpg").getImage();
-	private JButton btn;
-	private Container contentPane;
+   
+   private Image background = new ImageIcon("images/background.jpg").getImage();
+   private JButton btnStart;
+   private Font font = new Font("카페24 써라운드", 0, 30);
 
-	public Home(){
-		setTitle("뚝딱");
-		setSize(1024, 682);
-		setLocationRelativeTo(null);
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-//		Container contentPane = getContentPane();
-//		contentPane.setBackground(new Color(0xBD864F));
-		
-		btn = new JButton("시작하기");
-	    Font font = new Font("맑은 고딕", Font.BOLD, 30);
-	    btn.setFont(font);
-	    btn.setForeground(Color.orange);
-	    btn.setBackground(new Color(255, 232, 120));
-	    btn.setBounds(210, 350, 200, 60);
-	    btn.setBorderPainted(false);
-	    btn.setFocusPainted(false);
-	    btn.addActionListener(this);
-	      
-	    contentPane = getContentPane();
-	      
-	    JPanel jp = new JPanel();
-	    contentPane.add(jp);
-	    jp.setLayout(null);
-	    jp.add(btn);
+   public Home(){
+      setTitle("홈");
+      setSize(1024, 682);
+      setLocationRelativeTo(null);
+      setResizable(false);
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
+      //
+      JPanel panelBase = new JPanel();
+      panelBase.setLayout(null);
+      
+      // 시작하기 버튼
+      btnStart = new JButton("시작하기");
+      btnStart.setFont(font);
+      btnStart.setForeground(Color.orange);
+      btnStart.setBackground(new Color(255, 232, 120));
+      btnStart.setBounds(290, 380, 200, 60);
+      btnStart.setBorderPainted(false);
+      btnStart.setFocusPainted(false);
+      btnStart.addActionListener(this);
+         
+      panelBase.add(btnStart);
+      add(panelBase);
 
-		setVisible(true);
-	}
+      setVisible(true);
+   }
 
+   public void paint(Graphics g) {
+      g.drawImage(background, 0, 0, null);
+   }
 
-	public void paint(Graphics g) {
-		g.drawImage(background, 0, 0, null);
-	}
+   public static void main(String[] args) {
+      new Home();
+   }
 
-	public static void main(String[] args) {
-		new Home();
-	}
+   @Override
+   public void actionPerformed(ActionEvent e) {
+      Object obj = e.getSource();
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object obj = e.getSource();
-		
-		if(obj == btn) {
-			new Login();
-		}
-	}
+      // 시작하기 버튼을 누르면, 로그인
+      if(obj == btnStart) {
+         new Login();
+      }
+   }
 
 }

@@ -41,6 +41,9 @@ public class Write extends JFrame implements ActionListener{
 	private JButton btnImage;
 	private JFileChooser fileChooser;
 	private ImageIcon image;
+	private Font label_font = new Font("카페24 써라운드", 0, 12);
+
+
 	
 	//private Menu menu;
 	
@@ -61,11 +64,8 @@ public class Write extends JFrame implements ActionListener{
 		
 		JLabel labelLogo = new JLabel(new ImageIcon("images/logo_b.jpg"));
 		
-		
 		//
 		makeWrite();
-		
-		
 		
 		add(panelWrite, BorderLayout.CENTER);
 		add(panelBtn, BorderLayout.SOUTH);
@@ -75,17 +75,19 @@ public class Write extends JFrame implements ActionListener{
 	
 	private void makeWrite() {
 		
-		
 		panelWrite = new JPanel();
 		panelWrite.setLayout(null);
-		
-		labelImage = new JLabel(image);
+	
+		labelImage = new JLabel("사진 없음");
+		labelImage.setBorder(BorderFactory.createBevelBorder(1));
 		labelImage.setBounds(330, 130, 115, 125);
 		
-		btnImage = new JButton("사진 첨부");
-		btnImage.setBounds(360, 250, 100, 25);
+		btnImage = new RoundedButton("사진 첨부");
+		btnImage.setFont(label_font);
+		btnImage.setBounds(340, 250, 100, 20);
+		btnImage.setBorderPainted(false);
 		btnImage.addActionListener(this);
-		
+//		
 	    JLabel labelFoodName = new JLabel("음식 이름이 무엇인가요?");
 	    labelFoodName.setBounds(465, 110, 300, 30);
 	    textFieldFoodName = new JTextField(25);

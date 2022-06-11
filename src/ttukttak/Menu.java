@@ -27,7 +27,6 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 	private JButton btnWrite;
 	private Login login_id;
 	private String user_id;
-	
 	private Connection conn = null;
 	private java.sql.Statement stmt = null;
 	private ResultSet result = null;
@@ -39,10 +38,11 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 	private String index;
 	private JLabel labelindex;
 	private String sql;
+	private JScrollPane scrollPane;
+	private JScrollBar scrollBar;
+	private JScrollPane scroll;
+	private JPanel panelPick;
 	
-//	public Menu(String user_id) {
-//		this.user_id = user_id;
-//	}
 	public Menu(String user_id) {
 		
 		this.user_id = user_id;
@@ -56,7 +56,7 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Container contentPane = getContentPane();
-		contentPane.setBackground(new Color(0xF4F3EF));
+		contentPane.setBackground(Color.WHITE);
 		
 		//
 		makeHeader();
@@ -78,12 +78,14 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 	public String getUser_id() {
 		return user_id;
 	}
+	
 	private void makeBtnWrite() {
 		panelBtnWrite = new JPanel();
 		panelBtnWrite.setLayout(new BorderLayout());
-		panelBtnWrite.setBackground(new Color(0xF4F3EF));
+		panelBtnWrite.setBackground(Color.WHITE);
 		
-		btnWrite = new JButton("글쓰기");
+		btnWrite = new RoundedButton("글쓰기");
+		btnWrite.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		btnWrite.addActionListener(this);
 		
 		panelBtnWrite.add(btnWrite, BorderLayout.EAST);
@@ -91,59 +93,51 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 
 	private void makeHeader() {
 		panelHeader = new JPanel();
-		panelHeader.setBackground(new Color(0xF4F3EF));
+		panelHeader.setBackground(Color.WHITE);
 		panelHeader.setLayout(new BorderLayout());
 		
-		ImageIcon logo = new ImageIcon("images/logo_basic.jpg");
+		ImageIcon logo = new ImageIcon("images/logo.jpg");
 		JLabel label = new JLabel(logo);
 		
-		toolBar = new JToolBar();
-		toolBar.setBackground(new Color(0xF4F3EF));
-		toolBar.setBorderPainted(false);
-		
-		btnSave = new JButton(new ImageIcon("images/save_fill.png"));
-		btnSave.setBackground(new Color(0xF4F3EF));
-		btnSave.setBorderPainted(false);
-		btnSave.addActionListener(this);
-		
-		btnUser = new JButton(new ImageIcon("images/user_fill.png"));
-		btnUser.setBackground(new Color(0xF4F3EF));
-		btnUser.setBorderPainted(false);
-		btnUser.addActionListener(this);
-		
-		toolBar.add(btnSave);
-		toolBar.add(btnUser);
-		
 		panelHeader.add(label, BorderLayout.CENTER);
-		panelHeader.add(toolBar, BorderLayout.EAST);
 	}
 
 	private void makeMenu() {
-		tabbedPane = new JTabbedPane();
-		tabbedPane.setBackground(new Color(0xF4F3EF));
-		tabbedPane.setFont(new Font("", Font.BOLD, 15));
-		tabbedPane.addMouseListener(this);
 		
+		//
+		tabbedPane = new JTabbedPane();
+		tabbedPane.setBackground(Color.WHITE);
+		tabbedPane.setFont(new Font("", Font.BOLD, 15));
+
+		//
 		panelAll = new JPanel();
-		panelAll.setBackground(new Color(0xF4F3EF));
+		panelAll.setBackground(Color.WHITE);
 		tabbedPane.addTab("전체", new ImageIcon(""), panelAll);
 		
-		
+		//
 		panelKorean = new JPanel();
-		panelKorean.setBackground(new Color(0xF4F3EF));
-		tabbedPane.addTab("한식", new ImageIcon(), panelKorean);
+		panelKorean.setBackground(Color.WHITE);
+		tabbedPane.addTab("한식", new ImageIcon(""), panelKorean);
 		
+		//
 		panelJapanese = new JPanel();
-		panelJapanese.setBackground(new Color(0xF4F3EF));
+		panelJapanese.setBackground(Color.WHITE);
 		tabbedPane.addTab("일식", new ImageIcon(""), panelJapanese);
 		
+		//
 		panelWestern = new JPanel();
-		panelWestern.setBackground(new Color(0xF4F3EF));
+		panelWestern.setBackground(Color.WHITE);
 		tabbedPane.addTab("양식", new ImageIcon("images/western.png"), panelWestern);
 		
+		//
 		panelEtc = new JPanel();
-		panelEtc.setBackground(new Color(0xF4F3EF));
+		panelEtc.setBackground(Color.WHITE);
 		tabbedPane.addTab("기타", new ImageIcon(""), panelEtc);
+		
+		//
+		panelPick = new JPanel();
+		panelPick.setBackground(Color.WHITE);
+		tabbedPane.addTab("찜", new ImageIcon(""), panelPick);
 		
 		String sql = "select recipe_index, image, foodname, ingredient from recipe";
 		
@@ -157,25 +151,39 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 			result = stmt.executeQuery(sql);
 			
 			while(result.next()) {
-			
+				
 				recipeIndex = result.getString("recipe_index");
 				String foodName = result.getString("foodname");
 				String ingredient = result.getString("ingredient");
 				
 				btnList = new JButton();
+				btnList.setPreferredSize(new Dimension(500, 150));
+				btnList.setLayout(null);
 				btnList.setContentAreaFilled(false);
 				btnList.addActionListener(this);
-				btnList.setLayout(new FlowLayout());
+				btnList.addMouseListener(this);
 
-				btnList.setPreferredSize(new Dimension(500, 150));
+				//
+				
 				
 				labelindex = new JLabel(recipeIndex);
+				
+				// 이미지
 				JLabel labelImage = new JLabel();
+				labelImage.setBounds(30, 20, 110, 120);
+				
+				//
 				JLabel foodname = new JLabel(foodName);
+				foodname.setBounds(25, 15, 300, 30);
+				
 				JLabel ing = new JLabel(ingredient);
+				ing.setBounds(25, 50, 1000, 30);
+				
 				image = new ImageIcon("images/save_empty.png");
 				btnPick = new JButton(image);
+				btnPick.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 15));
 				btnPick.addActionListener(this);
+				btnPick.addMouseListener(this);
 				
 				btnList.add(labelindex);
 				btnList.add(labelImage);
@@ -185,7 +193,8 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 				
 				panelAll.add(btnList);
 				labelindex.setVisible(false);
-				System.out.println(btnList.getAccessibleContext().getAccessibleIndexInParent() + 1);
+				index = labelindex.getText();
+				System.out.println(index);
 				System.out.println(foodName);
 				System.out.println(ingredient);
 			}
@@ -214,16 +223,11 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 		if(obj == btnWrite) {
 			
 			this.setVisible(false);
-		
-//			user_id = login_id.getUser_id();
 			new Write(user_id);
 		} else if(obj == btnList) {
-			System.out.println(btnList.getAccessibleContext().getAccessibleIndexInParent());
-			
+			System.out.println("리스트를 선택함");
 		} else if(obj == btnPick) {
-			
-			index = labelindex.getText();
-			
+			System.out.println("찜하기 버튼을 선택함");
 			
 			
 			try {
@@ -238,31 +242,54 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 				
 				if(result.next()) {
 					String save = result.getString("save");
+					
 					if(save.equals("1")) {
 						sql = "update pick set save = 0 where user_id = '" + user_id + "' and recipe_index = '" + index + "'";
 						stmt = conn.createStatement();
 						int result = stmt.executeUpdate(sql);
-					}else {
+						System.out.println("찜한 버튼이 취소 되었습니다.");
+					}else if(save.equals("0")){
 						sql = "update pick set save = 1 where user_id = '" + user_id + "' and recipe_index = '" + index + "'";
 						stmt = conn.createStatement();
-						result = stmt.executeQuery(sql);
+						int result = stmt.executeUpdate(sql);
+						System.out.println("취소했던 요리가 다시 찜하기 되었습니다.");
 					}
 				}else {
+					sql = "insert into pick(user_id, recipe_index, save) values('" + user_id + "', '" + index + "', 1";
+					stmt = conn.createStatement();
+					int result = stmt.executeUpdate(sql);
+					System.out.println("새로 찜한 요리에 추가되었습니다.");
+				}
+				
+//				if(!(result.next())) {
 //					sql = "insert into pick(user_id, recipe_index, save) values('" + user_id + "', '" + index + "', 1)";
 //					
 //					stmt = conn.createStatement();
 //				
 //					int result = stmt.executeUpdate(sql);
-					System.out.println("에라모르겠다");
+//					System.out.println("에라모르겠다");
+//					
+//				}else {
+//					String save = result.getString("save");
+//					if(save.equals("1")) {
+//						sql = "update pick set save = 0 where user_id = '" + user_id + "' and recipe_index = '" + index + "'";
+//						stmt = conn.createStatement();
+//						int result = stmt.executeUpdate(sql);
+//						System.out.println(sql);
+//					}else {
+//						sql = "update pick set save = 1 where user_id = '" + user_id + "' and recipe_index = '" + index + "'";
+//						stmt = conn.createStatement();
+//						int result = stmt.executeUpdate(sql);
+//						System.out.println(sql);
+//					}
 //					
 
-				}
+				
 //				//				while(result.next()) {
 //					
 //				}
 //			
-			
-			} catch (SQLException e1) {
+			}catch (SQLException e1) {
 				System.out.println("SQLException 예외 발생 : 접속 정보 확인이 필요합니다.");
 				e1.printStackTrace();
 			} catch (ClassNotFoundException e1) {
@@ -277,43 +304,43 @@ public class Menu extends JFrame implements ActionListener, MouseListener{
 					e1.printStackTrace();
 				}
 			}
-			
 		}
 		
-//		 else if(obj == btnSave) {
-//			this.setVisible(false);
-//			
-//			new Save();
-//		} else if(obj == btnUser) {
-//			this.setVisible(false);
-//			
-//		} 
-	}
+			
+		}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		Object obj = e.getSource();
-	
 		
+		if(obj == btnList) {
+			System.out.println("리스트 버튼 선택함");
+		} else if(obj == btnPick) {
+			System.out.println("찜하기 버튼 선택함");
+		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 

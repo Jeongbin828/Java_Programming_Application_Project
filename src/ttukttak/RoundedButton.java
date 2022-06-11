@@ -15,8 +15,8 @@ public class RoundedButton extends JButton{
 	      @Override 
 	      protected void paintComponent(Graphics g) {
 	    	  
-	         Color c=new Color(0,0,0); //배경색 결정
-	         Color o=new Color(255,255,255); //글자색 결정
+	         Color colorBackground = new Color(0,0,0); //배경색 결정
+	         Color colorFont = new Color(255,255,255); //글자색 결정
 	         
 	         int width = getWidth(); 
 	         int height = getHeight(); 
@@ -24,9 +24,9 @@ public class RoundedButton extends JButton{
 	         Graphics2D graphics = (Graphics2D) g; 
 	         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); 
 	         
-	         if (getModel().isArmed()) { graphics.setColor(c.darker()); } 
-	         else if (getModel().isRollover()) { graphics.setColor(c.brighter()); } 
-	         else { graphics.setColor(c); } 
+	         if (getModel().isArmed()) { graphics.setColor(colorBackground.darker()); } 
+	         else if (getModel().isRollover()) { graphics.setColor(colorBackground.brighter()); } 
+	         else { graphics.setColor(colorBackground); } 
 	         graphics.fillRoundRect(0, 0, width, height, 10, 10); 
 	         
 	         FontMetrics fontMetrics = graphics.getFontMetrics(); 
@@ -35,11 +35,11 @@ public class RoundedButton extends JButton{
 	         int textX = (width - stringBounds.width) / 2; 
 	         int textY = (height - stringBounds.height) / 2 + fontMetrics.getAscent(); 
 	         
-	         graphics.setColor(o); 
+	         graphics.setColor(colorFont); 
 	         graphics.setFont(getFont()); 
 	         graphics.drawString(getText(), textX, textY); 
 	         graphics.dispose(); 
-	         super.paintComponent(g); 
 	         
+	         super.paintComponent(g); 
 	      }
 }
